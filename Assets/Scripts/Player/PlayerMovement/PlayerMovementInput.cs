@@ -134,4 +134,9 @@ public class PlayerMovementInput : MonoBehaviour
 #endif
         }
     }
+
+    public void ToggleGyroscopeMovement(bool newValue)
+    {
+        useGyroscopeIfAvailable = newValue;
+    }
 }
