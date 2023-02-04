@@ -20,18 +20,12 @@ public class PlayerMovementInput : MonoBehaviour
     private float _friction = .9f;
     private float _gyroThreshold = .1f;
 
-    // UI
-    [SerializeField] private TMP_Text isGyroEnableLabel;
-    [SerializeField] private TMP_Text gyroRotationRateLabel;
-    [SerializeField] private TMP_Text gyroAttitudeLabel;
-    [SerializeField] private TMP_Text accelerationLabel;
     private void Start()
     {
         _playerTransform = GetComponent<Transform>();
         _rootPlayerTransform = _playerTransform.parent.GetComponent<Transform>();
         _screenWidth = Screen.width;
 
-        isGyroEnableLabel.text = ("is Gyro supported: " + SystemInfo.supportsGyroscope);
         Input.gyro.enabled = SystemInfo.supportsGyroscope && useGyroscopeIfAvailable;
 
 #if UNITY_EDITOR
