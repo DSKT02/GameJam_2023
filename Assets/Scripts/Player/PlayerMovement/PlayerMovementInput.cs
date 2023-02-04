@@ -18,7 +18,7 @@ public class PlayerMovementInput : MonoBehaviour
     private float _touchInput;
     private float _gyroVelocity = 0f;
     private float _friction = .9f;
-    private float _gyroThreshold = .1f;
+    private float _gyroThreshold = .05f;
 
     private void Start()
     {
