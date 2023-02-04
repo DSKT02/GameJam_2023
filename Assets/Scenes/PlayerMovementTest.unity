@@ -371,10 +371,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b087d4e19ff14876ac42a1f46efe54f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lateralAceleration: 10
+  lateralAcceleration: 10
   movementRadius: 3
-  rightFallThreshold: 10
-  leftFallThreshold: 4
   forwardVelocity: 5
 --- !u!135 &1789417868
 SphereCollider:
