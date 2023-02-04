@@ -57,7 +57,6 @@ public class PlayerMovementInput : MonoBehaviour
         if (SystemInfo.supportsGyroscope && useGyroscopeIfAvailable)
         {
             float horizontal = Input.gyro.rotationRateUnbiased.y;
-            print(horizontal);
 
             if (Input.gyro.rotationRateUnbiased.magnitude > _gyroThreshold)
             {
@@ -67,7 +66,6 @@ public class PlayerMovementInput : MonoBehaviour
             else
             {
                 Falling();
-                //_playerTransform.position += new Vector3(horizontal * Time.deltaTime, 0, 0);
             }
         }
         else
