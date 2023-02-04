@@ -122,7 +122,7 @@ public class PlayerMovementInput : MonoBehaviour
         {
             if (SystemInfo.supportsGyroscope && useGyroscopeIfAvailable)
             {
-                _gyroVelocity =+(lateralAcceleration * 2.75f) * _playerTransform.localPosition.x * Time.deltaTime;
+                _gyroVelocity += (lateralAcceleration * 2.75f) * _playerTransform.localPosition.x * Time.deltaTime;
             }
             else
             {
