@@ -30,7 +30,7 @@ public class PlayerMovementInput : MonoBehaviour
 
 #if UNITY_EDITOR
         print($"Touch Support: {Input.touchSupported}");
-        print($"Gyro Support: {Input.gyro.enabled}");
+        print($"Gyro Support: {SystemInfo.supportsGyroscope}");
 #endif
     }
 
