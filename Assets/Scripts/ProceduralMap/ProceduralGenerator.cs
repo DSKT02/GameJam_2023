@@ -256,6 +256,12 @@ public class ProceduralGenerator : MonoBehaviour
                 result = _.LastPoints.Count <= 0 ? true : result;
             }
 
+            if(currentDistance < 120)
+            {
+                result = _.LastPoints.Find((__) => __.direcion == Directions.right) != null ? true : result;
+                result = _.LastPoints.Find((__) => __.direcion == Directions.left) != null ? true : result;
+            }
+
             return result;
         };
     }
