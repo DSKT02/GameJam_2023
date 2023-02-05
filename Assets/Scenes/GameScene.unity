@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.36899567, g: 0.31914508, b: 0.2088252, a: 1}
+  m_IndirectSpecularColor: {r: 0.36850724, g: 0.31834987, b: 0.20874421, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2363,7 +2363,7 @@ MonoBehaviour:
   lateralAcceleration: 10
   movementRadius: 2.18
   forwardVelocity: 10
-  useGyroscopeIfAvailable: 1
+  useGyroscopeIfAvailable: 0
   proceduralGenerator: {fileID: 809944239}
   detectSwipeOnlyAfterRelease: 0
   _radiusPercentToLoose: 0.9
@@ -3463,7 +3463,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1859186808}
-  m_LocalRotation: {x: 0.41055882, y: 0, z: 0, w: 0.91183406}
+  m_LocalRotation: {x: 0.41055885, y: -0.000000022188107, z: 0.00000000999033, w: 0.9118342}
   m_LocalPosition: {x: 0, y: 17.3, z: -3.90001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
