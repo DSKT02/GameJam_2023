@@ -30,6 +30,11 @@ public class GameFlowManager : MonoBehaviour
     public void InitGame()
     {
         cameras.SwitchToGameCamera();
+        Invoke(nameof(EnablePlayer), 3f);       
+    }
+
+    private void EnablePlayer()
+    {
         player.enabled = true;
     }
 
