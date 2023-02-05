@@ -442,7 +442,7 @@ MonoBehaviour:
   lateralAcceleration: 10
   movementRadius: 3
   forwardVelocity: 5
-  useGyroscopeIfAvailable: 1
+  useGyroscopeIfAvailable: 0
 --- !u!135 &1789417868
 SphereCollider:
   m_ObjectHideFlags: 0

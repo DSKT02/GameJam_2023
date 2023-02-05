@@ -34,9 +34,8 @@ public class PlayerMovementInput : MonoBehaviour
 #endif
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        //Falling();
         LateralMovement();
         MoveForward();
 
