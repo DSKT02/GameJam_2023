@@ -8,6 +8,7 @@ public class MenuController : MonoBehaviour
 {
     [SerializeField] private GameObject initGamePanel;
     [SerializeField] private GameObject endGamePanel;
+    [SerializeField] private GameObject inGamePanel;
 
     [SerializeField] private Toggle gyroToggle;
 
@@ -15,6 +16,7 @@ public class MenuController : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI highscoreInit;
     [SerializeField] private TextMeshProUGUI highscoreEnd;
+    [SerializeField] private TextMeshProUGUI highscoreIn;
 
     [SerializeField] private Button playButton;
     [SerializeField] private Button continueButton;
@@ -35,7 +37,7 @@ public class MenuController : MonoBehaviour
 
     public void Play()
     {
-        ClosePanels();
+        OpenPanelIn();
         GameFlowManager.Instance.InitGame();
     }
 
@@ -49,6 +51,7 @@ public class MenuController : MonoBehaviour
         UpdateHighscores();
         initGamePanel.SetActive(true);
         endGamePanel.SetActive(false);
+        inGamePanel.SetActive(false);
     }
 
     public void OpenPanelEnd()
@@ -56,19 +59,24 @@ public class MenuController : MonoBehaviour
         UpdateHighscores();
         initGamePanel.SetActive(false);
         endGamePanel.SetActive(true);
+        inGamePanel.SetActive(false);
     }
 
-    public void ClosePanels()
+    public void OpenPanelIn()
     {
         UpdateHighscores();
         initGamePanel.SetActive(false);
         endGamePanel.SetActive(false);
+        inGamePanel.SetActive(true);
     }
 
     public void UpdateHighscores()
     {
-        string text = $"Acorn HighScore: {CollectablesManager.AcornHighscore}";
-        highscoreEnd.text = text;
-        highscoreInit.text = text;
+        string textHS = $"Acorn HighScore: {CollectablesManager.AcornHighscore}";
+        highscoreEnd.text = textHS;
+        highscoreInit.text = textHS;
+
+        string textS = $"Acorn Score: {CollectablesManager.Instance.CurrentAcorns}";
+        highscoreIn.text = textS;
     }
 }
