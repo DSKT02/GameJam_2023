@@ -21,7 +21,7 @@ public class Acorn : MonoBehaviour
         initialPos = transform.localPosition;
     }
 
-    public void Disable()
+    public void Disable(bool collect)
     {
         mesh.enabled = false;
         collider.enabled = false;
