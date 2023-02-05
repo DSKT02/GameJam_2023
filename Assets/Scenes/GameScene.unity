@@ -337,8 +337,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 129079960}
-  m_LocalRotation: {x: 0, y: 0.9900084, z: 0.14100844, w: 0}
-  m_LocalPosition: {x: -2575, y: 2082, z: 873}
+  m_LocalRotation: {x: -0.05962404, y: 0.8971511, z: 0.1277835, w: 0.4186124}
+  m_LocalPosition: {x: -2580.02, y: 2082, z: 870.4547}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -364,11 +364,47 @@ MonoBehaviour:
   m_UpdateMethod: 2
   m_BlendUpdateMethod: 1
   m_DefaultBlend:
-    m_Style: 1
+    m_Style: 7
     m_Time: 2
     m_CustomCurve:
       serializedVersion: 2
-      m_Curve: []
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0.003540039
+        inSlope: 0.049644567
+        outSlope: 0.049644567
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.41756958
+      - serializedVersion: 3
+        time: 0.9069846
+        value: 0.39845723
+        inSlope: 0.90923244
+        outSlope: 0.90923244
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.9727128
+        value: 0.9420951
+        inSlope: 3.0250618
+        outSlope: 3.0250618
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.11342325
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0.1847883
+        outSlope: 0.1847883
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.20649658
+        outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -462,7 +498,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.029057369, y: 0.1975245}
   m_AnchorMax: {x: 0.98638314, y: 0.23922764}
-  m_AnchoredPosition: {x: 0, y: -0.000061035156}
+  m_AnchoredPosition: {x: 0, y: -0.00012207031}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &171092957
@@ -694,7 +730,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.029057369, y: 0.1975245}
   m_AnchorMax: {x: 0.98638314, y: 0.23922764}
-  m_AnchoredPosition: {x: 0, y: -0.000061035156}
+  m_AnchoredPosition: {x: 0, y: -0.00012207031}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &261522912
@@ -720,7 +756,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 261522912}
-  m_LocalRotation: {x: -0, y: -0.11472783, z: -0, w: 0.993397}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -728,7 +764,7 @@ Transform:
   - {fileID: 1365659961}
   m_Father: {fileID: 0}
   m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: -13.176, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &300029329
 GameObject:
   m_ObjectHideFlags: 0
@@ -797,7 +833,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4281671205
-  m_fontColor: {r: 0.14630273, g: 0.11845853, b: 0.20754719, a: 1}
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1027,7 +1063,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 5
-  m_FollowOffset: {x: 0, y: 11.62, z: -13.3}
+  m_FollowOffset: {x: 0, y: 17.3, z: -13.90001}
   m_XDamping: 1
   m_YDamping: 0.02
   m_ZDamping: 0.02
@@ -1447,10 +1483,22 @@ MonoBehaviour:
   initialGeneretion: 10
   updateInterval: 0.1
   tilesPrefab:
+  - {fileID: 8599210124535827915, guid: 1e97eeb2673e0624e9bdbe33e23a7fd9, type: 3}
+  - {fileID: 8599210124535827915, guid: a3f6a3107bff6d545b11f67865d5464e, type: 3}
+  - {fileID: 8599210124535827915, guid: d1c5550e47b119e42871d73e3c741033, type: 3}
   - {fileID: 8599210124535827915, guid: 539d745e8bab4394385c8062d4c3a9f6, type: 3}
   - {fileID: 7404155973518739514, guid: 2a090f53d002757428405ac92e2c248e, type: 3}
+  - {fileID: 5295107810211729130, guid: 3e302bec8ecae524c91f71e217c8f823, type: 3}
+  - {fileID: 5295107810211729130, guid: 4364f760fe481024ca5e21f1ec2b9490, type: 3}
+  - {fileID: 5295107810211729130, guid: 38a97b05f96fc2b4799a498dc7c1ad2e, type: 3}
   - {fileID: 5295107810211729130, guid: 474546026e3810642837949572cad95f, type: 3}
+  - {fileID: 5074769310495358351, guid: 7322b263488270c44b833beb27f588ca, type: 3}
+  - {fileID: 5074769310495358351, guid: f19ebfb639e6dc841ae885045f39f612, type: 3}
+  - {fileID: 5074769310495358351, guid: 281199da867c22443bda7fd03d9ebe8f, type: 3}
   - {fileID: 5074769310495358351, guid: a75342ac505375349b29c7061187a2ec, type: 3}
+  - {fileID: 2633533752266697807, guid: d6a145b6960036d42b51e238b4c67d7b, type: 3}
+  - {fileID: 2633533752266697807, guid: 38a3141a32bcd074ea64ac62193f7998, type: 3}
+  - {fileID: 2633533752266697807, guid: d21c0c134e86d2b48946585835116a96, type: 3}
   - {fileID: 2633533752266697807, guid: afeac85e559e5094c9704984050d3a85, type: 3}
 --- !u!4 &809944240
 Transform:
@@ -1481,7 +1529,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 261522913}
   gridCellSize: {x: 36, y: 40}
-  gridSize: {x: 3, y: 8}
+  gridSize: {x: 5, y: 12}
   initialPos: {x: 0, y: 0, z: 20}
   backgroundtilePrefab: {fileID: 7275263504788914158, guid: fca64a0107efac640808797c226c735e, type: 3}
   tilesUpdateCycle: 0.2
@@ -2050,7 +2098,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4281671205
-  m_fontColor: {r: 0.14630273, g: 0.11845853, b: 0.20754719, a: 1}
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2416,15 +2464,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1845527618}
-  m_LocalRotation: {x: -0, y: 0.9900084, z: 0.14100844, w: 0}
-  m_LocalPosition: {x: -2575, y: 2082, z: 873}
+  m_LocalRotation: {x: -0.05962404, y: 0.8971511, z: 0.1277835, w: 0.4186124}
+  m_LocalPosition: {x: -2580.02, y: 2082, z: 870.4547}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 614506229}
   m_Father: {fileID: 0}
   m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: -16.212, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: -16.213, y: 129.972, z: 0}
 --- !u!1 &1849593076
 GameObject:
   m_ObjectHideFlags: 0
@@ -2598,7 +2646,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 261522913}
   m_Follow: {fileID: 261522913}
   m_Lens:
-    FieldOfView: 56.74
+    FieldOfView: 71.71
     OrthographicSize: 10
     NearClipPlane: 0.1
     FarClipPlane: 5000
@@ -2622,15 +2670,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1859186808}
-  m_LocalRotation: {x: 0.31725302, y: 0.000000011116311, z: -0.0000000037187917, w: 0.94834095}
-  m_LocalPosition: {x: 0, y: 11.62, z: -3.3000002}
+  m_LocalRotation: {x: 0.41055882, y: 0, z: 0, w: 0.91183406}
+  m_LocalPosition: {x: 0, y: 17.3, z: -3.90001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 412232554}
   m_Father: {fileID: 0}
   m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 23.974, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 36.994, y: 0, z: 0}
 --- !u!1 &2036346833
 GameObject:
   m_ObjectHideFlags: 0
@@ -2995,8 +3043,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 566110136948750719}
-  m_LocalRotation: {x: -0, y: -0.11472783, z: -0, w: 0.993397}
-  m_LocalPosition: {x: -2574.7798, y: 2083.3096, z: 866.2705}
+  m_LocalRotation: {x: 0.15477784, y: -0.41662464, z: 0.072219744, w: 0.89288974}
+  m_LocalPosition: {x: -2574.7244, y: 2083.165, z: 866.3018}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3005,7 +3053,7 @@ Transform:
   - {fileID: 5725596100903182362}
   m_Father: {fileID: 0}
   m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: -13.176, z: 0}
+  m_LocalEulerAnglesHint: {x: 19.668, y: -50.028, z: 0}
 --- !u!1 &1151129357360066394
 GameObject:
   m_ObjectHideFlags: 0
