@@ -8,7 +8,7 @@ public class PlayerMovementInput : MonoBehaviour
     [SerializeField] private float lateralAcceleration = 10f;
     [SerializeField] private float movementRadius = 3f;
     [SerializeField] private float forwardVelocity = 5f;
-    [SerializeField] private bool useGyroscopeIfAvailable = true;
+    [SerializeField] private bool useGyroscopeIfAvailable = false;
     [SerializeField] private ProceduralGenerator proceduralGenerator;
 
     private Transform _playerTransform;
@@ -175,7 +175,6 @@ public class PlayerMovementInput : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        print(other.name);
         ProceduralTile tile;
         if (other.transform.parent == null) { return; }
 
@@ -213,8 +212,6 @@ public class PlayerMovementInput : MonoBehaviour
             if (other.name.ToLower().Contains("out"))
             {
                 other.enabled = false;
-                float line = proceduralGenerator.CurrentLanePos;
-                _rootPlayerTransform.position = new Vector3(line, _rootPlayerTransform.position.y, _rootPlayerTransform.position.z);
 
                 if (_lastTurn == Directions.left)
                 {
@@ -236,12 +233,12 @@ public class PlayerMovementInput : MonoBehaviour
 
     private void TurnRight()
     {
-        _rootPlayerTransform.rotation = Quaternion.AngleAxis(_rootPlayerTransform.rotation.eulerAngles.y + 45, _rootPlayerTransform.up);
+        _rootPlayerTransform.rotation = Quaternion.AngleAxis(_rootPlayerTransform.rotation.eulerAngles.y + 41.78f, _rootPlayerTransform.up);
     }
 
     private void TurnLeft()
     {
-        _rootPlayerTransform.rotation = Quaternion.AngleAxis(_rootPlayerTransform.rotation.eulerAngles.y - 45, _rootPlayerTransform.up);
+        _rootPlayerTransform.rotation = Quaternion.AngleAxis(_rootPlayerTransform.rotation.eulerAngles.y - 41.78f, _rootPlayerTransform.up);
     }
 
     private void Jump()
