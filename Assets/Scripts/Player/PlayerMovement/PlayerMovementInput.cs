@@ -9,6 +9,7 @@ public class PlayerMovementInput : MonoBehaviour
     [SerializeField] private float movementRadius = 3f;
     [SerializeField] private float forwardVelocity = 5f;
     [SerializeField] private bool useGyroscopeIfAvailable = true;
+    [SerializeField] private ProceduralGenerator proceduralGenerator;
 
     private Transform _playerTransform;
     private Transform _rootPlayerTransform;
@@ -62,15 +63,9 @@ public class PlayerMovementInput : MonoBehaviour
     public void UpdatePlayerRotation()
     {
         Vector3 dir = _playerTransform.position - _rootPlayerTransform.position;
-        //_playerTransform.up = dir.normalized;
-        //_playerTransform.LookAt(-_rootPlayerTransform.forward, dir.normalized);
         _playerTransform.forward = _rootPlayerTransform.forward;
         Vector3 up = transform.TransformDirection(dir.normalized);
-        Quaternion rotation = Quaternion.LookRotation(transform.forward, up);
-        _playerTransform.rotation = rotation;
-        //_playerTransform.rotation.SetLookRotation(_rootPlayerTransform.forward, dir);
-
-
+        _playerTransform.rotation = Quaternion.LookRotation(transform.forward, up);
     }
 
     private void LateralMovement()
@@ -204,6 +199,9 @@ public class PlayerMovementInput : MonoBehaviour
 
             if (other.name.ToLower().Contains("out"))
             {
+                float line = proceduralGenerator.CurrentLanePos;
+                _rootPlayerTransform.position = new Vector3(line, _rootPlayerTransform.position.y, _rootPlayerTransform.position.z);
+
                 if (_lastTurn == Directions.left)
                 {
                     TurnRight();
@@ -211,6 +209,7 @@ public class PlayerMovementInput : MonoBehaviour
 
                 if (_lastTurn == Directions.right)
                 {
+                    print(line);
                     TurnLeft();
                 }
             }
