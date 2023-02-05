@@ -371,7 +371,7 @@ MonoBehaviour:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.003540039
+        value: 0
         inSlope: 0.049644567
         outSlope: 0.049644567
         tangentMode: 0
@@ -2320,6 +2320,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1365659961}
+  - component: {fileID: 1365659966}
   - component: {fileID: 1365659965}
   - component: {fileID: 1365659962}
   - component: {fileID: 1365659964}
@@ -2361,9 +2362,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lateralAcceleration: 10
   movementRadius: 2.18
-  forwardVelocity: 5
+  forwardVelocity: 10
   useGyroscopeIfAvailable: 1
-  proceduralGenerator: {fileID: 0}
+  proceduralGenerator: {fileID: 809944239}
   detectSwipeOnlyAfterRelease: 0
   _radiusPercentToLoose: 0.9
   RootPosition: 0
@@ -2409,6 +2410,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   menu: {fileID: 2073119565}
+--- !u!114 &1365659966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1365659960}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fefc105c1899b240a503688f44043f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1407558992
 GameObject:
   m_ObjectHideFlags: 0
@@ -3450,7 +3463,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1859186808}
-  m_LocalRotation: {x: 0.41055885, y: 0, z: 0, w: 0.9118342}
+  m_LocalRotation: {x: 0.41055882, y: 0, z: 0, w: 0.91183406}
   m_LocalPosition: {x: 0, y: 17.3, z: -3.90001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
