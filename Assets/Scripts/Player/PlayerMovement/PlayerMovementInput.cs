@@ -57,6 +57,7 @@ public class PlayerMovementInput : MonoBehaviour
         MoveForward();
 
         UpdatePlayerPosition();
+        UpdatePlayerRotation();
         
         _playerDirection = GetPlayerDirection();
 
