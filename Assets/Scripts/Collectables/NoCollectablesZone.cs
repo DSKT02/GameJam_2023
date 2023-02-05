@@ -8,7 +8,7 @@ public class NoCollectablesZone : MonoBehaviour
     {
         if (other.TryGetComponent<Acorn>(out var acorn))
         {
-            acorn.Disable();
+            acorn.Disable(false);
         }
     }
 }

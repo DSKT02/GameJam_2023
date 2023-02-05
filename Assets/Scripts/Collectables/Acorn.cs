@@ -12,6 +12,8 @@ public class Acorn : MonoBehaviour
 
     [SerializeField] private float rotationSpeed;
 
+    [SerializeField] private AudioSource _audioSource;
+
     private Vector3 initialPos;
 
     private void Start()
@@ -24,10 +26,15 @@ public class Acorn : MonoBehaviour
         gameObject.SetActive(true);
     }
 
-    public void Disable()
+    public void Disable(bool collect)
     {
         mesh.enabled = false;
         collider.enabled = false;
+
+        if (collect)
+        {
+            _audioSource.Play();
+        }
     }
 
     private void OnEnable()
