@@ -19,11 +19,6 @@ public class Acorn : MonoBehaviour
         initialPos = transform.localPosition;
     }
 
-    private void Reactive()
-    {
-        gameObject.SetActive(true);
-    }
-
     public void Disable()
     {
         mesh.enabled = false;
