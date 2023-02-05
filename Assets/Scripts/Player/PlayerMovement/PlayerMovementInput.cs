@@ -257,6 +257,7 @@ public class PlayerMovementInput : MonoBehaviour
     public void ToggleGyroscopeMovement(bool newValue)
     {
         useGyroscopeIfAvailable = newValue;
+        Input.gyro.enabled = SystemInfo.supportsGyroscope && useGyroscopeIfAvailable;
     }
 
     private void TurnRight()
