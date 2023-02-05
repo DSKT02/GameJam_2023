@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using static UnityEngine.LightAnchor;
 
 public class PlayerMovementInput : MonoBehaviour
 {
@@ -19,6 +20,11 @@ public class PlayerMovementInput : MonoBehaviour
     private float _gyroVelocity = 0f;
     private float _friction = .9f;
     private float _gyroThreshold = .05f;
+    private float _maxLenghtLeftSubline = .6f;
+    private float _maxLenghtCenterSubline = .3f;
+    private float _maxLenghtRightSubline = .6f;
+    private Directions _playerDirection;
+    private Directions _lastTurn;
 
     private void Start()
     {
@@ -40,6 +46,8 @@ public class PlayerMovementInput : MonoBehaviour
         MoveForward();
 
         UpdatePlayerPosition();
+        UpdatePlayerRotation();
+        _playerDirection = GetPlayerDirection();
     }
 
     private void UpdatePlayerPosition()
@@ -49,6 +57,20 @@ public class PlayerMovementInput : MonoBehaviour
         float newYPos = Mathf.Sqrt(Mathf.Pow(movementRadius, 2) - Mathf.Pow(newXPos, 2));
 
         _playerTransform.localPosition = new Vector3(newXPos, newYPos, _playerTransform.localPosition.z);
+    }
+
+    public void UpdatePlayerRotation()
+    {
+        Vector3 dir = _playerTransform.position - _rootPlayerTransform.position;
+        //_playerTransform.up = dir.normalized;
+        //_playerTransform.LookAt(-_rootPlayerTransform.forward, dir.normalized);
+        _playerTransform.forward = _rootPlayerTransform.forward;
+        Vector3 up = transform.TransformDirection(dir.normalized);
+        Quaternion rotation = Quaternion.LookRotation(transform.forward, up);
+        _playerTransform.rotation = rotation;
+        //_playerTransform.rotation.SetLookRotation(_rootPlayerTransform.forward, dir);
+
+
     }
 
     private void LateralMovement()
@@ -134,8 +156,79 @@ public class PlayerMovementInput : MonoBehaviour
         }
     }
 
+    private Directions GetPlayerDirection()
+    {
+        if (_playerTransform.localPosition.x > (-movementRadius * _maxLenghtLeftSubline) &&
+                _playerTransform.localPosition.x < (-movementRadius * _maxLenghtCenterSubline)) { return Directions.left; }
+
+        if (_playerTransform.localPosition.x >= (-movementRadius * _maxLenghtCenterSubline) &&
+            _playerTransform.localPosition.x <= (movementRadius * _maxLenghtCenterSubline)) { return Directions.center; }
+
+        if (_playerTransform.localPosition.x > (movementRadius * _maxLenghtCenterSubline) &&
+            _playerTransform.localPosition.x < (movementRadius * _maxLenghtRightSubline)) { return Directions.right; }
+
+        Directions lastDirection = _playerDirection;
+        return lastDirection;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        print(other.name);
+        ProceduralTile tile;
+        if (other.transform.parent.TryGetComponent<ProceduralTile>(out tile))
+        {
+            other.enabled = false;
+
+            if (other.name.ToLower().Contains("in"))
+            {
+                foreach (LastPoints lastPoint in tile.LastPoints)
+                {
+                    if (lastPoint.direcion == _playerDirection)
+                    {
+                        _lastTurn = lastPoint.direcion;
+
+                        switch (lastPoint.direcion)
+                        {
+                            case Directions.left:
+                                TurnLeft();
+                                break;
+                            case Directions.right:
+                                TurnRight();
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }
+
+            if (other.name.ToLower().Contains("out"))
+            {
+                if (_lastTurn == Directions.left)
+                {
+                    TurnRight();
+                }
+
+                if (_lastTurn == Directions.right)
+                {
+                    TurnLeft();
+                }
+            }
+        }
+    }
+
     public void ToggleGyroscopeMovement(bool newValue)
     {
         useGyroscopeIfAvailable = newValue;
+    }
+
+    private void TurnRight()
+    {
+        _rootPlayerTransform.rotation = Quaternion.AngleAxis(_rootPlayerTransform.rotation.eulerAngles.y + 45, _rootPlayerTransform.up);
+    }
+
+    private void TurnLeft()
+    {
+        _rootPlayerTransform.rotation = Quaternion.AngleAxis(_rootPlayerTransform.rotation.eulerAngles.y - 45, _rootPlayerTransform.up);
     }
 }
