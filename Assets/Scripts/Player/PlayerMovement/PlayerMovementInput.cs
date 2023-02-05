@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using static UnityEngine.LightAnchor;
+using System.Collections;
 
 public class PlayerMovementInput : MonoBehaviour
 {
@@ -26,6 +26,11 @@ public class PlayerMovementInput : MonoBehaviour
     private float _maxLenghtRightSubline = .6f;
     private Directions _playerDirection;
     private Directions _lastTurn;
+    private bool _isJumping = false;
+    private Vector2 fingerDown;
+    private Vector2 fingerUp;
+    public bool detectSwipeOnlyAfterRelease = false;
+
 
     private void Start()
     {
@@ -43,6 +48,8 @@ public class PlayerMovementInput : MonoBehaviour
 
     private void FixedUpdate()
     {
+        Jump();
+
         LateralMovement();
         MoveForward();
 
@@ -170,35 +177,42 @@ public class PlayerMovementInput : MonoBehaviour
     {
         print(other.name);
         ProceduralTile tile;
+        if (other.transform.parent == null) { return; }
+
         if (other.transform.parent.TryGetComponent<ProceduralTile>(out tile))
         {
-            other.enabled = false;
 
             if (other.name.ToLower().Contains("in"))
             {
-                foreach (LastPoints lastPoint in tile.LastPoints)
+                other.enabled = false;
+                if (tile.LastPoints.Find((_) => _.direcion == _playerDirection) != null)
                 {
-                    if (lastPoint.direcion == _playerDirection)
+                    _lastTurn = _playerDirection;
+                    switch (_playerDirection)
                     {
-                        _lastTurn = lastPoint.direcion;
-
-                        switch (lastPoint.direcion)
-                        {
-                            case Directions.left:
-                                TurnLeft();
-                                break;
-                            case Directions.right:
-                                TurnRight();
-                                break;
-                            default:
-                                break;
-                        }
+                        case Directions.left:
+                            TurnLeft();
+                            break;
+                        case Directions.right:
+                            TurnRight();
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                else
+                {
+                    if (_playerDirection == Directions.center)
+                    {
+                        _lastTurn = Directions.right;
+                        TurnRight();
                     }
                 }
             }
 
             if (other.name.ToLower().Contains("out"))
             {
+                other.enabled = false;
                 float line = proceduralGenerator.CurrentLanePos;
                 _rootPlayerTransform.position = new Vector3(line, _rootPlayerTransform.position.y, _rootPlayerTransform.position.z);
 
@@ -209,7 +223,6 @@ public class PlayerMovementInput : MonoBehaviour
 
                 if (_lastTurn == Directions.right)
                 {
-                    print(line);
                     TurnLeft();
                 }
             }
@@ -230,4 +243,111 @@ public class PlayerMovementInput : MonoBehaviour
     {
         _rootPlayerTransform.rotation = Quaternion.AngleAxis(_rootPlayerTransform.rotation.eulerAngles.y - 45, _rootPlayerTransform.up);
     }
+
+    private void Jump()
+    {
+        if (_isJumping) { return; }
+
+        if (SystemInfo.supportsGyroscope && useGyroscopeIfAvailable)
+        {
+            // Check gryo input here
+            _isJumping = true;
+            StartCoroutine(C_StopJumpTest());
+        }
+        else
+        {
+            // Check swip gesture here
+            if (Input.touchSupported)
+            {
+                if (Input.touchCount > 0)
+                {
+                    Touch touch = Input.GetTouch(0);
+                    _isJumping = true;
+                    if (touch.phase == TouchPhase.Began)
+                    {
+                        fingerUp = touch.position;
+                        fingerDown = touch.position;
+                    }
+
+                    //Detects Swipe while finger is still moving
+                    if (touch.phase == TouchPhase.Moved)
+                    {
+                        if (!detectSwipeOnlyAfterRelease)
+                        {
+                            fingerDown = touch.position;
+                            checkSwipe();
+                        }
+                    }
+
+                    //Detects swipe after finger is released
+                    if (touch.phase == TouchPhase.Ended)
+                    {
+                        fingerDown = touch.position;
+                        checkSwipe();
+                    }
+                }
+            } else
+            {
+                // check vertial axis input here
+                if (Input.GetAxis("Vertical") > 0 || Input.GetButtonDown("Jump"))
+                {
+                    _isJumping = true;
+                    print("Salta puta !!!");
+                    StartCoroutine(C_StopJumpTest());
+                }
+            }
+        }
+    }
+
+    private void checkSwipe()
+    {
+        //Check if Vertical swipe
+        if (verticalMove() > .1f && verticalMove() > horizontalValMove())
+        {
+            //Debug.Log("Vertical");
+            if (fingerDown.y - fingerUp.y > 0)//up swipe
+            {
+                OnSwipeUp();
+            }
+            else if (fingerDown.y - fingerUp.y < 0)//Down swipe
+            {
+                OnSwipeDown();
+            }
+            fingerUp = fingerDown;
+        }
+    }
+
+    private float verticalMove()
+    {
+        return Mathf.Abs(fingerDown.y - fingerUp.y);
+    }
+
+    private IEnumerator C_StopJumpTest()
+    {
+        yield return new WaitForSeconds(2f);
+        _isJumping = false;
+    }
+
+    private float horizontalValMove()
+    {
+        return Mathf.Abs(fingerDown.x - fingerUp.x);
+    }
+
+    //Called when a swipe up movement is detected
+    private void OnSwipeUp()
+    {
+        Debug.Log("Swipe Up");
+        StartCoroutine(C_StopJumpTest());
+    }
+
+    //Called when a swipe down movement is detected
+    private void OnSwipeDown()
+    {
+        Debug.Log("Swipe Down");
+        StartCoroutine(C_StopJumpTest());
+    }
+
+    // para matar al jugar crear un metodo
+    // que sea fallOffTheMap()
+    // ejecutarlo cuando llegue a un punto muerto y cuando se pase del threshold laterales
 }
