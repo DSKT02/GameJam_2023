@@ -10,7 +10,7 @@ public class Recollector : MonoBehaviour
     {
         if(other.TryGetComponent<Acorn>(out var acorn))
         {
-            acorn.Disable();
+            acorn.Disable(true);
             CollectablesManager.Instance.CurrentAcorns++;
             menu.UpdateHighscores();
         }

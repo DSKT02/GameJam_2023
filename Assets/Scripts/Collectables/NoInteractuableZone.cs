@@ -8,7 +8,7 @@ public class NoInteractuableZone : MonoBehaviour
     {
         if (other.TryGetComponent<Acorn>(out var acorn))
         {
-            acorn.Disable();
+            acorn.Disable(false);
         }
         if(other.TryGetComponent<DeathTrap>(out var trap))
         {

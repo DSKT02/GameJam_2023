@@ -32,6 +32,9 @@ public class PlayerMovementInput : MonoBehaviour
     public bool detectSwipeOnlyAfterRelease = false;
 
 
+    [SerializeField] private float _radiusPercentToLoose;
+    public float RootPosition;
+
     private void Start()
     {
         _playerTransform = GetComponent<Transform>();
@@ -54,8 +57,24 @@ public class PlayerMovementInput : MonoBehaviour
         MoveForward();
 
         UpdatePlayerPosition();
-        UpdatePlayerRotation();
+        
         _playerDirection = GetPlayerDirection();
+
+        CheckRootPosition();
+        CheckLoose();
+    }
+
+    private void CheckRootPosition()
+    {
+        RootPosition = _playerTransform.localPosition.x / (movementRadius * _radiusPercentToLoose);
+    }
+
+    private void CheckLoose()
+    {
+        if (RootPosition <= -1 || RootPosition >= 1)
+        {
+            GameFlowManager.Instance.PlayerDied();
+        }
     }
 
     private void UpdatePlayerPosition()
