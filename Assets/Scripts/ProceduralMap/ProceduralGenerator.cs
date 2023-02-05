@@ -29,7 +29,7 @@ public class ProceduralGenerator : MonoBehaviour
     private int generateLayersCount = 0;
 
     private bool generating = false;
-    private float CurrentLanePos { get => Mathf.RoundToInt(target.position.x / laneSeparation) * laneSeparation; }
+    public float CurrentLanePos { get => Mathf.RoundToInt(target.position.x / laneSeparation) * laneSeparation; }
 
     private void Start()
     {
