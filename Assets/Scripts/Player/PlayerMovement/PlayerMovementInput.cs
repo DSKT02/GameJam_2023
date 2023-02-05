@@ -223,8 +223,16 @@ public class PlayerMovementInput : MonoBehaviour
                 {
                     if (_playerDirection == Directions.center)
                     {
-                        _lastTurn = Directions.right;
-                        TurnRight();
+                        if (_playerTransform.localPosition.x >= 0)
+                        {
+                            _lastTurn = Directions.right;
+                            TurnRight();
+                        }
+                        else
+                        {
+                            _lastTurn = Directions.left;
+                            TurnLeft();
+                        }
                     }
                 }
             }
