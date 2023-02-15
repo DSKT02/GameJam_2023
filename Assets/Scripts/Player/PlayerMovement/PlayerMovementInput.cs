@@ -28,7 +28,7 @@ public class PlayerMovementInput : MonoBehaviour
     private Directions _lastTurn;
     private bool _isJumping = false;
     private float _jumpElapsedTime;
-    private float _jumpDuration = .5f;
+    private float _jumpDuration;
     private float _y0;
     private float _rootStartXPos;
     [SerializeField] private float _maxJumpHeight;
@@ -38,15 +38,17 @@ public class PlayerMovementInput : MonoBehaviour
 
 
     [SerializeField] private float _radiusPercentToLoose;
-    public float RootPosition;
+    private float _rootPosition;
+
+    public float RootPosition { get => _rootPosition; }
 
     private void Start()
     {
         _playerTransform = GetComponent<Transform>();
         _rootPlayerTransform = _playerTransform.parent.GetComponent<Transform>();
         _screenWidth = Screen.width;
-        //float v = Mathf.Sqrt(2 * -Physics.gravity.y) * 2;
-        //_jumpDuration = (v / -Physics.gravity.y) * 2;
+        float v = Mathf.Sqrt(2 * -Physics.gravity.y) * 2;
+        _jumpDuration = (v / -Physics.gravity.y) * 2;
         _y0 = movementRadius;
 
         Input.gyro.enabled = SystemInfo.supportsGyroscope && useGyroscopeIfAvailable;
@@ -69,18 +71,13 @@ public class PlayerMovementInput : MonoBehaviour
 
         _playerDirection = GetPlayerDirection();
 
-        CheckRootPosition();
         CheckLoose();
-    }
-
-    private void CheckRootPosition()
-    {
-        RootPosition = _playerTransform.localPosition.x / (movementRadius * _radiusPercentToLoose);
     }
 
     private void CheckLoose()
     {
-        if (RootPosition <= -1 || RootPosition >= 1)
+        _rootPosition = _playerTransform.localPosition.x / (movementRadius * _radiusPercentToLoose);
+        if (_rootPosition <= -1 || _rootPosition >= 1)
         {
             GameFlowManager.Instance.PlayerDied();
         }
@@ -291,15 +288,10 @@ public class PlayerMovementInput : MonoBehaviour
 
     private void Jump()
     {
-        // When jumping straight just move up and down the character
-        // When jumping sideways move also the root to the side
-        // MARK: When the jump starts it can trigger the collision thus making it possible to make turns
         print($"Can jump: {!_isJumping}");
+        // While is jumping move the caracter and ignore new inputs
         if (_isJumping)
         {
-            // While is jumping move the caracter and ignore new imputs
-            //float elapsedTime = Time.time - _jumpStartTime;
-            //if (elapsedTime < _jumpDuration)
             if (_jumpElapsedTime < _jumpDuration)
             {
                 // Calculate
@@ -354,60 +346,57 @@ public class PlayerMovementInput : MonoBehaviour
             }
             return;
         }
+        // If not, check for inputs.
 
+        // Check gryo input here
         if (SystemInfo.supportsGyroscope && useGyroscopeIfAvailable)
         {
-            // Check gryo input here
             _isJumping = true;
             // TODO: Gyro input here
+            _rootStartXPos = _rootPlayerTransform.localPosition.x;
+            return;
         }
-        else
+
+        // Check swipe gesture here
+        if (Input.touchSupported /* && _useTouch */)
         {
-            // Check swip gesture here
-            if (Input.touchSupported)
+            if (Input.touchCount == 0) { return; }
+
+            Touch touch = Input.GetTouch(0);
+            if (touch.phase == TouchPhase.Began)
             {
-                if (Input.touchCount > 0)
+                fingerUp = touch.position;
+                fingerDown = touch.position;
+            }
+
+            //Detects Swipe while finger is still moving
+            if (touch.phase == TouchPhase.Moved)
+            {
+                if (!detectSwipeOnlyAfterRelease)
                 {
-                    //_jumpElapsedTime = Time.time;
-                    Touch touch = Input.GetTouch(0);
-                    if (touch.phase == TouchPhase.Began)
-                    {
-                        fingerUp = touch.position;
-                        fingerDown = touch.position;
-                    }
-
-                    //Detects Swipe while finger is still moving
-                    if (touch.phase == TouchPhase.Moved)
-                    {
-                        if (!detectSwipeOnlyAfterRelease)
-                        {
-                            fingerDown = touch.position;
-                            checkSwipe();
-                        }
-                    }
-
-                    //Detects swipe after finger is released
-                    if (touch.phase == TouchPhase.Ended)
-                    {
-                        fingerDown = touch.position;
-                        checkSwipe();
-                    }
+                    fingerDown = touch.position;
+                    checkSwipe();
                 }
             }
-            else
+
+            //Detects swipe after finger is released
+            if (touch.phase == TouchPhase.Ended)
             {
-                // check vertial axis input here
-                if (Input.GetAxis("Vertical") > 0 || Input.GetButtonDown("Jump"))
-                {
-                    _isJumping = true;
-                    //_jumpElapsedTime = Time.time;
-                    print("Salta puta !!!");
-                    //StartCoroutine(C_StopJumpTest());
-                }
+                fingerDown = touch.position;
+                checkSwipe();
             }
+            return;
         }
 
-        if (_isJumping) { _rootStartXPos = _rootPlayerTransform.localPosition.x; }
+        // check vertial axis and jump input here
+        if (Input.GetAxis("Vertical") > 0 || Input.GetButtonDown("Jump"))
+        {
+            _isJumping = true;
+            print("Salta puta !!!");
+            _rootStartXPos = _rootPlayerTransform.localPosition.x;
+
+            return;
+        }
     }
 
     private void checkSwipe()
@@ -443,13 +432,12 @@ public class PlayerMovementInput : MonoBehaviour
     {
         Debug.Log("Swipe Up");
         _isJumping = true;
-        //StartCoroutine(C_StopJumpTest());
+        _rootStartXPos = _rootPlayerTransform.localPosition.x;
     }
 
     //Called when a swipe down movement is detected
     private void OnSwipeDown()
     {
         Debug.Log("Swipe Down");
-        //StartCoroutine(C_StopJumpTest());
     }
 }
