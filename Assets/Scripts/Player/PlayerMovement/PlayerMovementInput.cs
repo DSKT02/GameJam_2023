@@ -20,13 +20,18 @@ public class PlayerMovementInput : MonoBehaviour
     private float _touchInput;
     private float _gyroVelocity = 0f;
     private float _friction = .9f;
-    private float _gyroThreshold = .05f;
+    private float _gyroThreshold = 1.55f;
     private float _maxLenghtLeftSubline = .6f;
     private float _maxLenghtCenterSubline = .3f;
     private float _maxLenghtRightSubline = .6f;
     private Directions _playerDirection;
     private Directions _lastTurn;
     private bool _isJumping = false;
+    private float _jumpElapsedTime;
+    private float _jumpDuration = .5f;
+    private float _y0;
+    private float _rootStartXPos;
+    [SerializeField] private float _maxJumpHeight;
     private Vector2 fingerDown;
     private Vector2 fingerUp;
     public bool detectSwipeOnlyAfterRelease = false;
@@ -40,6 +45,9 @@ public class PlayerMovementInput : MonoBehaviour
         _playerTransform = GetComponent<Transform>();
         _rootPlayerTransform = _playerTransform.parent.GetComponent<Transform>();
         _screenWidth = Screen.width;
+        //float v = Mathf.Sqrt(2 * -Physics.gravity.y) * 2;
+        //_jumpDuration = (v / -Physics.gravity.y) * 2;
+        _y0 = movementRadius;
 
         Input.gyro.enabled = SystemInfo.supportsGyroscope && useGyroscopeIfAvailable;
 
@@ -51,14 +59,14 @@ public class PlayerMovementInput : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Jump();
-
-        LateralMovement();
         MoveForward();
+
+        Jump();
+        LateralMovement();
 
         UpdatePlayerPosition();
         UpdatePlayerRotation();
-        
+
         _playerDirection = GetPlayerDirection();
 
         CheckRootPosition();
@@ -80,6 +88,8 @@ public class PlayerMovementInput : MonoBehaviour
 
     private void UpdatePlayerPosition()
     {
+        if (_isJumping) { return; }
+
         float velocitiy = (SystemInfo.supportsGyroscope && useGyroscopeIfAvailable) ? _gyroVelocity : _lateralVelocity;
         float newXPos = Mathf.Clamp(Mathf.SmoothDamp(_playerTransform.localPosition.x, _playerTransform.localPosition.x + velocitiy * Time.deltaTime, ref _lateralVelocity, _smoothTime), -movementRadius, movementRadius);
         float newYPos = Mathf.Sqrt(Mathf.Pow(movementRadius, 2) - Mathf.Pow(newXPos, 2));
@@ -89,6 +99,8 @@ public class PlayerMovementInput : MonoBehaviour
 
     public void UpdatePlayerRotation()
     {
+        if (_isJumping) { return; }
+
         Vector3 dir = _playerTransform.position - _rootPlayerTransform.position;
         _playerTransform.forward = _rootPlayerTransform.forward;
         Vector3 up = transform.TransformDirection(dir.normalized);
@@ -97,6 +109,9 @@ public class PlayerMovementInput : MonoBehaviour
 
     private void LateralMovement()
     {
+        // Make the player fall to right by default
+        if (_isJumping) { return; }
+
         if (SystemInfo.supportsGyroscope && useGyroscopeIfAvailable)
         {
             float horizontal = Input.gyro.rotationRateUnbiased.y;
@@ -243,11 +258,13 @@ public class PlayerMovementInput : MonoBehaviour
 
                 if (_lastTurn == Directions.left)
                 {
+                    _rootPlayerTransform.localPosition = new Vector3(_rootStartXPos - 12, _rootPlayerTransform.localPosition.y, _rootPlayerTransform.localPosition.z);
                     TurnRight();
                 }
 
                 if (_lastTurn == Directions.right)
                 {
+                    _rootPlayerTransform.localPosition = new Vector3(_rootStartXPos + 12, _rootPlayerTransform.localPosition.y, _rootPlayerTransform.localPosition.z);
                     TurnLeft();
                 }
             }
@@ -262,23 +279,87 @@ public class PlayerMovementInput : MonoBehaviour
 
     private void TurnRight()
     {
+        _rootStartXPos = _rootPlayerTransform.localPosition.x;
         _rootPlayerTransform.rotation = Quaternion.AngleAxis(_rootPlayerTransform.rotation.eulerAngles.y + 41.78f, _rootPlayerTransform.up);
     }
 
     private void TurnLeft()
     {
+        _rootStartXPos = _rootPlayerTransform.localPosition.x;
         _rootPlayerTransform.rotation = Quaternion.AngleAxis(_rootPlayerTransform.rotation.eulerAngles.y - 41.78f, _rootPlayerTransform.up);
     }
 
     private void Jump()
     {
-        if (_isJumping) { return; }
+        // When jumping straight just move up and down the character
+        // When jumping sideways move also the root to the side
+        // MARK: When the jump starts it can trigger the collision thus making it possible to make turns
+        print($"Can jump: {!_isJumping}");
+        if (_isJumping)
+        {
+            // While is jumping move the caracter and ignore new imputs
+            //float elapsedTime = Time.time - _jumpStartTime;
+            //if (elapsedTime < _jumpDuration)
+            if (_jumpElapsedTime < _jumpDuration)
+            {
+                // Calculate
+                print("Calculating jump");
+                //float t = Mathf.Clamp01(elapsedTime / _jumpDuration);
+                _jumpElapsedTime += Time.deltaTime;
+                float t = Mathf.Clamp01(_jumpElapsedTime / _jumpDuration);
+                float y = (4 * _maxJumpHeight * t * (1 - t)) + _y0;
+                //print($"Jump progress {t}");
+
+                switch (_playerDirection)
+                {
+                    case Directions.center:
+                        break;
+                    case Directions.left:
+                        print("Should move root to the left");
+                        _rootPlayerTransform.localPosition = new Vector3(_rootStartXPos - (12 * t), _rootPlayerTransform.localPosition.y, _rootPlayerTransform.localPosition.z);
+                        break;
+                    case Directions.right:
+                        print("Should move root to the right"); 
+                        _rootPlayerTransform.localPosition = new Vector3(_rootStartXPos + (12 * t), _rootPlayerTransform.localPosition.y, _rootPlayerTransform.localPosition.z);
+                        break;
+                }
+
+                _playerTransform.localPosition = new Vector3(_playerTransform.localPosition.x, y, _playerTransform.localPosition.z);
+            }
+
+            if (_jumpElapsedTime >= _jumpDuration)
+            {
+                _isJumping = false;
+                _jumpElapsedTime = 0;
+                // If the root x value is not multiple of 12 then the player is dead
+                if (_rootStartXPos % 12 != 0)
+                {
+                    GameFlowManager.Instance.PlayerDied();
+                    return;
+                }
+
+                switch (_playerDirection)
+                {
+                    case Directions.center:
+                        break;
+                    case Directions.left:
+                        _rootPlayerTransform.localPosition = new Vector3(_rootStartXPos - 12, _rootPlayerTransform.localPosition.y, _rootPlayerTransform.localPosition.z);
+                        break;
+                    case Directions.right:
+                        _rootPlayerTransform.localPosition = new Vector3(_rootStartXPos + 12, _rootPlayerTransform.localPosition.y, _rootPlayerTransform.localPosition.z);
+                        break;
+                }
+                _rootStartXPos = _rootPlayerTransform.localPosition.x;
+                // clamp the y pos to the initial pos
+            }
+            return;
+        }
 
         if (SystemInfo.supportsGyroscope && useGyroscopeIfAvailable)
         {
             // Check gryo input here
             _isJumping = true;
-            StartCoroutine(C_StopJumpTest());
+            // TODO: Gyro input here
         }
         else
         {
@@ -287,8 +368,8 @@ public class PlayerMovementInput : MonoBehaviour
             {
                 if (Input.touchCount > 0)
                 {
+                    //_jumpElapsedTime = Time.time;
                     Touch touch = Input.GetTouch(0);
-                    _isJumping = true;
                     if (touch.phase == TouchPhase.Began)
                     {
                         fingerUp = touch.position;
@@ -312,17 +393,21 @@ public class PlayerMovementInput : MonoBehaviour
                         checkSwipe();
                     }
                 }
-            } else
+            }
+            else
             {
                 // check vertial axis input here
                 if (Input.GetAxis("Vertical") > 0 || Input.GetButtonDown("Jump"))
                 {
                     _isJumping = true;
+                    //_jumpElapsedTime = Time.time;
                     print("Salta puta !!!");
-                    StartCoroutine(C_StopJumpTest());
+                    //StartCoroutine(C_StopJumpTest());
                 }
             }
         }
+
+        if (_isJumping) { _rootStartXPos = _rootPlayerTransform.localPosition.x; }
     }
 
     private void checkSwipe()
@@ -348,12 +433,6 @@ public class PlayerMovementInput : MonoBehaviour
         return Mathf.Abs(fingerDown.y - fingerUp.y);
     }
 
-    private IEnumerator C_StopJumpTest()
-    {
-        yield return new WaitForSeconds(2f);
-        _isJumping = false;
-    }
-
     private float horizontalValMove()
     {
         return Mathf.Abs(fingerDown.x - fingerUp.x);
@@ -363,17 +442,14 @@ public class PlayerMovementInput : MonoBehaviour
     private void OnSwipeUp()
     {
         Debug.Log("Swipe Up");
-        StartCoroutine(C_StopJumpTest());
+        _isJumping = true;
+        //StartCoroutine(C_StopJumpTest());
     }
 
     //Called when a swipe down movement is detected
     private void OnSwipeDown()
     {
         Debug.Log("Swipe Down");
-        StartCoroutine(C_StopJumpTest());
+        //StartCoroutine(C_StopJumpTest());
     }
-
-    // para matar al jugar crear un metodo
-    // que sea fallOffTheMap()
-    // ejecutarlo cuando llegue a un punto muerto y cuando se pase del threshold laterales
 }
