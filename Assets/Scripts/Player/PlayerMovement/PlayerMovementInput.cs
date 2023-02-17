@@ -22,9 +22,6 @@ public class PlayerMovementInput : MonoBehaviour
     private float _gyroVelocity = 0f;
     private float _friction = .9f;
     private float _gyroThreshold = 1.55f;
-    private float _maxLenghtLeftSubline = .6f;
-    private float _maxLenghtCenterSubline = .3f;
-    private float _maxLenghtRightSubline = .6f;
     private Directions _playerDirection;
     private Directions _lastTurn;
     private bool _isJumping = false;
@@ -193,17 +190,21 @@ public class PlayerMovementInput : MonoBehaviour
 
     private Directions GetPlayerDirection()
     {
-        if (_playerTransform.localPosition.x > (-movementRadius * _maxLenghtLeftSubline) &&
-                _playerTransform.localPosition.x < (-movementRadius * _maxLenghtCenterSubline)) { return Directions.left; }
+        if (_rootPosition >= .5f) { return Directions.right; } 
+        if (_rootPosition <= -.5f) { return Directions.left; }
 
-        if (_playerTransform.localPosition.x >= (-movementRadius * _maxLenghtCenterSubline) &&
-            _playerTransform.localPosition.x <= (movementRadius * _maxLenghtCenterSubline)) { return Directions.center; }
+        return Directions.center;
+        //if (_playerTransform.localPosition.x > (-movementRadius * _maxLenghtLeftSubline) &&
+        //        _playerTransform.localPosition.x < (-movementRadius * _maxLenghtCenterSubline)) { return Directions.left; }
 
-        if (_playerTransform.localPosition.x > (movementRadius * _maxLenghtCenterSubline) &&
-            _playerTransform.localPosition.x < (movementRadius * _maxLenghtRightSubline)) { return Directions.right; }
+        //if (_playerTransform.localPosition.x >= (-movementRadius * _maxLenghtCenterSubline) &&
+        //    _playerTransform.localPosition.x <= (movementRadius * _maxLenghtCenterSubline)) { return Directions.center; }
 
-        Directions lastDirection = _playerDirection;
-        return lastDirection;
+        //if (_playerTransform.localPosition.x > (movementRadius * _maxLenghtCenterSubline) &&
+        //    _playerTransform.localPosition.x < (movementRadius * _maxLenghtRightSubline)) { return Directions.right; }
+
+        //Directions lastDirection = _playerDirection;
+        //return lastDirection;
     }
 
     private void OnTriggerEnter(Collider other)
