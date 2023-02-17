@@ -5,7 +5,7 @@ using UnityEngine;
 public class Acorn : MonoBehaviour
 {
     [SerializeField] private MeshRenderer mesh;
-    [SerializeField] private Collider collider;
+    [SerializeField] private Collider m_collider;
 
     [SerializeField] private float frec;
     [SerializeField] private float amp;
@@ -24,7 +24,7 @@ public class Acorn : MonoBehaviour
     public void Disable(bool collect)
     {
         mesh.enabled = false;
-        collider.enabled = false;
+        m_collider.enabled = false;
 
         if (collect)
         {
@@ -35,12 +35,12 @@ public class Acorn : MonoBehaviour
     private void OnEnable()
     {
         mesh.enabled = true;
-        collider.enabled = true;
+        m_collider.enabled = true;
     }
 
     private void Update()
     {
         transform.Rotate(new Vector3(0, rotationSpeed * Time.deltaTime, 0));
-        transform.localPosition = initialPos + ((amp * Mathf.Cos(frec * Time.time)) * new Vector3(1, 0.5f, 0));
+        transform.localPosition = initialPos + ((amp * Mathf.Cos(frec * Time.time)) * new Vector3(1, 0f, 0));
     }
 }
