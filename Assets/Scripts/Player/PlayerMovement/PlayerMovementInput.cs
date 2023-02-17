@@ -319,16 +319,25 @@ public class PlayerMovementInput : MonoBehaviour
                 _playerTransform.localPosition = new Vector3(_playerTransform.localPosition.x, y, _playerTransform.localPosition.z);
             }
 
+            // End of Jump
             if (_jumpElapsedTime >= _jumpDuration)
             {
                 _isJumping = false;
                 _jumpElapsedTime = 0;
-                // If the root x value is not multiple of 12 then the player is dead
-                if (_rootStartXPos % 12 != 0)
+
+                Collider[] hitColliders = Physics.OverlapSphere(_rootPlayerTransform.position, 0.01f);
+                bool isRoot = false;
+                foreach (Collider hitCollider in hitColliders)
                 {
-                    GameFlowManager.Instance.PlayerDied();
-                    return;
+                    if (hitCollider.tag == "Root")
+                    {
+                        isRoot = true;
+                        break;
+                    }
+                    
                 }
+
+                if (!isRoot) { GameFlowManager.Instance.PlayerDied(); }
 
                 switch (_playerDirection)
                 {
@@ -342,7 +351,6 @@ public class PlayerMovementInput : MonoBehaviour
                         break;
                 }
                 _rootStartXPos = _rootPlayerTransform.localPosition.x;
-                // clamp the y pos to the initial pos
             }
             return;
         }

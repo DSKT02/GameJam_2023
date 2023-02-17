@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mesh: {fileID: 7325116971431823851}
-  collider: {fileID: 7143421494879614778}
+  m_collider: {fileID: 7143421494879614778}
   frec: 1
   amp: 0.5
   rotationSpeed: 10
