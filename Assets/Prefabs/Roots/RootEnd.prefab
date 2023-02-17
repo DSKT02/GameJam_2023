@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 2638605435931648900}
   - component: {fileID: 6813333940013183241}
   - component: {fileID: 2989435433295543878}
+  - component: {fileID: 3649181632061423645}
   m_Layer: 0
   m_Name: BezierCurve.005
-  m_TagString: Untagged
+  m_TagString: Root
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -83,6 +84,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &3649181632061423645
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5667880690435419068}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 2876602339255033164, guid: e8c8be6576dbb094c8aa91328c94915d, type: 3}
 --- !u!1 &8300098113323038303
 GameObject:
   m_ObjectHideFlags: 0

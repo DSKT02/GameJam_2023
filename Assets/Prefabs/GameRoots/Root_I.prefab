@@ -89,11 +89,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialPoolSize: 4
-  baseChance: 2
+  baseChance: 1000
   initialPoint: {fileID: 8599210124535827914}
   lastPoints:
   - point: {fileID: 4608676046703302477}
     direcion: 0
+  colliders: []
 --- !u!1 &8599210125267355567
 GameObject:
   m_ObjectHideFlags: 0
