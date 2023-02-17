@@ -41,6 +41,6 @@ public class Acorn : MonoBehaviour
     private void Update()
     {
         transform.Rotate(new Vector3(0, rotationSpeed * Time.deltaTime, 0));
-        transform.localPosition = initialPos + ((amp * Mathf.Cos(frec * Time.time)) * new Vector3(1, 0f, 0));
+        transform.localPosition = initialPos + ((amp * Mathf.Cos(frec * Time.time)) * new Vector3(0f, 0.5f, 0));
     }
 }
