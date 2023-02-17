@@ -2365,10 +2365,10 @@ MonoBehaviour:
   forwardVelocity: 10
   useGyroscopeIfAvailable: 0
   proceduralGenerator: {fileID: 809944239}
+  playerAnimator: {fileID: 2035725126}
   _maxJumpHeight: 4.18
   detectSwipeOnlyAfterRelease: 0
   _radiusPercentToLoose: 0.9
-  RootPosition: 0
 --- !u!135 &1365659963
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -3464,7 +3464,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1859186808}
-  m_LocalRotation: {x: 0.41055885, y: -0.0000013961827, z: 0.0000006286397, w: 0.9118342}
+  m_LocalRotation: {x: 0.41055882, y: -0.0000013961824, z: 0.00000062863955, w: 0.91183406}
   m_LocalPosition: {x: 0.00004256685, y: 17.3, z: 1.0999899}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3473,6 +3473,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 36.994, y: 0, z: 0}
+--- !u!95 &2035725126 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 6516926723226300039, guid: 0f64181f976b79248b5f0a5e2d63de23, type: 3}
+  m_PrefabInstance: {fileID: 968086179}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2036346833
 GameObject:
   m_ObjectHideFlags: 0

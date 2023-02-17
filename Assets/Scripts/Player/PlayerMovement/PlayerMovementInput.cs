@@ -10,6 +10,7 @@ public class PlayerMovementInput : MonoBehaviour
     [SerializeField] private float forwardVelocity = 5f;
     [SerializeField] private bool useGyroscopeIfAvailable = false;
     [SerializeField] private ProceduralGenerator proceduralGenerator;
+    [SerializeField] private Animator playerAnimator;
 
     private Transform _playerTransform;
     private Transform _rootPlayerTransform;
@@ -323,6 +324,7 @@ public class PlayerMovementInput : MonoBehaviour
             if (_jumpElapsedTime >= _jumpDuration)
             {
                 _isJumping = false;
+                playerAnimator.SetBool("jumping", false);
                 _jumpElapsedTime = 0;
 
                 Collider[] hitColliders = Physics.OverlapSphere(_rootPlayerTransform.position, 0.01f);
@@ -362,6 +364,7 @@ public class PlayerMovementInput : MonoBehaviour
             _isJumping = true;
             // TODO: Gyro input here
             _rootStartXPos = _rootPlayerTransform.localPosition.x;
+            playerAnimator.SetBool("jumping", true);
             return;
         }
 
@@ -400,7 +403,7 @@ public class PlayerMovementInput : MonoBehaviour
         if (Input.GetAxis("Vertical") > 0 || Input.GetButtonDown("Jump"))
         {
             _isJumping = true;
-            print("Salta puta !!!");
+            playerAnimator.SetBool("jumping", true);
             _rootStartXPos = _rootPlayerTransform.localPosition.x;
 
             return;
@@ -440,6 +443,7 @@ public class PlayerMovementInput : MonoBehaviour
     {
         Debug.Log("Swipe Up");
         _isJumping = true;
+        playerAnimator.SetBool("jumping", true);
         _rootStartXPos = _rootPlayerTransform.localPosition.x;
     }
 
